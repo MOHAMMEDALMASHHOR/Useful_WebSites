@@ -1,0 +1,271 @@
+The `GETDATE()` function in SQL Server retrieves the current date and time from the system clock. It can be used in a `SELECT` statement to display the current date and time, or in other contexts to compare or manipulate date values.
+
+### Basic Syntax
+```sql
+SELECT GETDATE();
+```
+
+### Examples
+
+1. **Displaying the Current Date and Time**
+   This simple query will return the current date and time:
+   ```sql
+   SELECT GETDATE() AS CurrentDateTime;
+   ```
+   This will output something like:
+   ```
+   CurrentDateTime
+   -----------------------
+   2024-10-07 14:35:22.123
+   ```
+
+2. **Inserting Current Date and Time into a Table**
+   If you have a table and want to insert the current date and time into a column, you can do it like this:
+   ```sql
+   INSERT INTO Ogrenciler (ogr_no, ogr_ad, ogr_soyad, bolum_no, not, dogum_tarihi)
+   VALUES (1, 'Ali', 'Yılmaz', 1, 85, GETDATE());
+   ```
+   Assuming `dogum_tarihi` is a `DATETIME` column, this will insert the current date and time into the `dogum_tarihi` column.
+
+3. **Comparing Dates**
+   You can use `GETDATE()` in a `WHERE` clause to filter records based on the current date and time. For example:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE giris_tarihi < GETDATE();
+   ```
+   This will select all records where the `giris_tarihi` is before the current date and time.
+
+4. **Using with Date Functions**
+   You can also use `GETDATE()` in combination with other date functions. For example, if you want to find records from the last 30 days:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE giris_tarihi >= DATEADD(DAY, -30, GETDATE());
+   ```
+   This retrieves all students who enrolled in the last 30 days.
+
+### Summary
+- `GETDATE()` is useful for retrieving the current date and time.
+- It can be used in various contexts, including inserts, comparisons, and calculations involving dates.
+
+If you have specific scenarios in mind or further questions about date handling in SQL Server, let me know!Certainly! The `LIKE` operator in SQL is used for pattern matching in `WHERE` clauses. It allows you to search for a specified pattern in a column.
+
+### Basic Syntax
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name LIKE pattern;
+```
+
+### Wildcards
+- **`%`**: Represents zero or more characters.
+- **`_`**: Represents a single character.
+
+### Examples
+
+1. **Finding Names Starting with a Specific Letter**
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE ogr_ad LIKE 'A%';
+   ```
+   This will return all records where `ogr_ad` starts with the letter "A".
+
+2. **Finding Names Ending with a Specific Suffix**
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE ogr_ad LIKE '%son';
+   ```
+   This will return all records where `ogr_ad` ends with "son".
+
+3. **Finding Names Containing a Specific Substring**
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE ogr_ad LIKE '%Ali%';
+   ```
+   This will return all records where `ogr_ad` contains "Ali" anywhere in the name.
+
+4. **Finding Names with a Specific Pattern**
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE ogr_ad LIKE '_a%';
+   ```
+   This will return all records where `ogr_ad` has "a" as the second character.
+
+5. **Using `LIKE` with Numeric or Date Columns**
+   Although `LIKE` is most commonly used with string columns, you can also use it with formatted strings. For example, if you have a date stored as a string:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE CAST(dogum_tarihi AS VARCHAR) LIKE '2000%';
+   ```
+   This would find all records where `dogum_tarihi` is in the year 2000.
+
+### Summary
+- Use `%` for multiple characters and `_` for a single character.
+- `LIKE` is case-insensitive in SQL Server by default.
+
+If you have specific scenarios in mind or want further details, feel free to ask!The `IN` operator in SQL is used to specify multiple values in a `WHERE` clause. It allows you to check if a column's value matches any value within a specified set of values.
+
+### Basic Syntax
+```sql
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name IN (value1, value2, ...);
+```
+
+### Examples
+
+1. **Selecting Specific Values**
+   If you want to select students from specific departments:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE bolum_no IN (1, 2, 3);
+   ```
+   This returns all records where `bolum_no` is either 1, 2, or 3.
+
+2. **Using `IN` with String Values**
+   If you want to find students with specific names:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE ogr_ad IN ('Ali', 'Ayşe', 'Mehmet');
+   ```
+   This returns all records where `ogr_ad` is either "Ali," "Ayşe," or "Mehmet."
+
+3. **Using `IN` with Subqueries**
+   You can also use `IN` with a subquery. For example, to find students who are in departments listed in another table:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE bolum_no IN (SELECT bolum_no FROM Bolumler WHERE bolum_ad = 'Bilgisayar Mühendisliği');
+   ```
+   This returns students whose `bolum_no` matches those in the "Bilgisayar Mühendisliği" department.
+
+4. **Using `NOT IN`**
+   To find students who are not in certain departments:
+   ```sql
+   SELECT *
+   FROM Ogrenciler
+   WHERE bolum_no NOT IN (1, 2);
+   ```
+   This returns all records where `bolum_no` is not 1 or 2.
+
+### Summary
+- The `IN` operator simplifies queries that would otherwise require multiple `OR` conditions.
+- It works with any data type, including numbers and strings.
+
+If you have specific cases you'd like to explore or any other questions, let me know!Certainly! The LIKE operator in SQL is used for pattern matching in WHERE clauses. It allows you to search for a specified pattern in a column.
+
+Basic Syntax
+sql
+Copy code
+SELECT column1, column2, ...
+FROM table_name
+WHERE column_name LIKE pattern;
+Wildcards
+%: Represents zero or more characters.
+_: Represents a single character.
+Examples
+Finding Names Starting with a Specific Letter
+
+sql
+Copy code
+SELECT *
+FROM Ogrenciler
+WHERE ogr_ad LIKE 'A%';
+This will return all records where ogr_ad starts with the letter "A".
+
+Finding Names Ending with a Specific Suffix
+
+sql
+Copy code
+SELECT *
+FROM Ogrenciler
+WHERE ogr_ad LIKE '%son';
+This will return all records where ogr_ad ends with "son".
+
+Finding Names Containing a Specific Substring
+
+sql
+Copy code
+SELECT *
+FROM Ogrenciler
+WHERE ogr_ad LIKE '%Ali%';
+This will return all records where ogr_ad contains "Ali" anywhere in the name.
+
+Finding Names with a Specific Pattern
+
+sql
+Copy code
+SELECT *
+FROM Ogrenciler
+WHERE ogr_ad LIKE '_a%';
+This will return all records where ogr_ad has "a" as the second character.
+
+Using LIKE with Numeric or Date Columns Although LIKE is most commonly used with string columns, you can also use it with formatted strings. For example, if you have a date stored as a string:
+
+sql
+Copy code
+SELECT *
+FROM Ogrenciler
+WHERE CAST(dogum_tarihi AS VARCHAR) LIKE '2000%';
+This would find all records where dogum_tarihi is in the year 2000.
+
+Summary
+Use % for multiple characters and _ for a single character.
+LIKE is case-insensitive in SQL Server by default.
+If you have specific scenarios in mind or want further details, feel free to ask!The `AS` keyword in SQL is used to create an alias for a column or table. An alias is a temporary name that can make your queries easier to read and understand. It doesn’t change the actual name in the database; it only applies for the duration of that query.
+
+### Basic Syntax
+```sql
+SELECT column_name AS alias_name
+FROM table_name AS alias_table_name;
+```
+
+### Examples
+
+1. **Alias for a Column**
+   If you want to give a more descriptive name to a column in your result set, you can use `AS` like this:
+   ```sql
+   SELECT ogr_no AS Student_Number, ogr_ad AS First_Name, ogr_soyad AS Last_Name
+   FROM Ogrenciler;
+   ```
+   This will return the columns with headers "Student_Number," "First_Name," and "Last_Name" instead of the original column names.
+
+2. **Alias for a Table**
+   You can also create an alias for a table, which is especially useful for complex queries:
+   ```sql
+   SELECT o.ogr_ad, o.ogr_soyad
+   FROM Ogrenciler AS o;
+   ```
+   Here, `Ogrenciler` is aliased as `o`, allowing you to refer to the table using the shorter name.
+
+3. **Using Aliases with Aggregate Functions**
+   When using aggregate functions, you can provide aliases to make the output clearer:
+   ```sql
+   SELECT bolum_no, COUNT(*) AS Student_Count
+   FROM Ogrenciler
+   GROUP BY bolum_no;
+   ```
+   This query counts the number of students in each department and labels the count as "Student_Count."
+
+4. **Using Aliases in Joins**
+   When performing joins, aliases can help clarify which table each column comes from:
+   ```sql
+   SELECT o.ogr_ad, b.bolum_ad
+   FROM Ogrenciler AS o
+   JOIN Bolumler AS b ON o.bolum_no = b.bolum_no;
+   ```
+   Here, the aliases `o` and `b` help make the query more readable.
+
+### Summary
+- `AS` helps improve the readability of your SQL queries by allowing you to create meaningful aliases for columns and tables.
+- Aliases can make complex queries more understandable, especially when dealing with joins or aggregate functions.
+
+If you have more questions or need further examples, feel free to ask!
